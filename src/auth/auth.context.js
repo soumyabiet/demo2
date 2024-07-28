@@ -10,13 +10,21 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
-    const loginAction = async (userData) => {
+    const loginAction = async (userData, callback) => {
         const { statusCode, data } = await loginUser(userData);
         if (statusCode === 200) {
             localStorage.setItem('token', data.token);
             localStorage.setItem('uid', data.id);
             setAuthentication(true);
+            if( typeof callback === 'function') {
+                callback(data);
+            }
+            
             navigate('/');
+        } else {
+            if( typeof callback === 'function') {
+                callback(data);
+            }
         }
     }
 

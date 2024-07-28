@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
-import React from "react";
-import { Form, Button } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
 
 import * as Yup from 'yup';
 import { useAuth } from "../../auth/auth.context";
@@ -13,7 +13,9 @@ const LoginSchema = Yup.object().shape({
 });
 
 const UserLogin = () => {
-    const auth = useAuth();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const { loginAction } = useAuth();
     const formik = useFormik({
         initialValues: {
             username: '',
@@ -21,7 +23,14 @@ const UserLogin = () => {
         },
         validationSchema: LoginSchema,
         onSubmit: values => {
-            auth.loginAction(values);
+            setLoading(true)
+            loginAction(values, (data) => {
+                if (data.message) {
+                    setError(data.message);
+                }
+                setLoading(false)
+            });
+
         }
     });
 
@@ -30,13 +39,20 @@ const UserLogin = () => {
             <div className="panel panel-info" >
                 <Form onSubmit={formik.handleSubmit} className="mx-auto">
                     <h3>Sign In</h3>
+                    { error ? (<Alert variant={`danger`}>
+                        {error}
+                    </Alert>) : null}
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Username</Form.Label>
                         <Form.Control type="text"
                             placeholder="Enter username"
                             onChange={formik.handleChange}
                             name="username"
-                            value={formik.values.username} />
+                            value={formik.values.username}
+                            isInvalid={!!formik.errors.username} />
+                        <Form.Control.Feedback type="invalid">
+                            {formik.errors?.username}
+                        </Form.Control.Feedback>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -45,11 +61,15 @@ const UserLogin = () => {
                             placeholder="Password"
                             onChange={formik.handleChange}
                             name="password"
-                            value={formik.values.password} />
+                            value={formik.values.password}
+                            isInvalid={!!formik.errors.password} />
+                        <Form.Control.Feedback type="invalid">
+                            {formik.errors?.password}
+                        </Form.Control.Feedback>
                     </Form.Group>
 
-                    <Button variant="primary" type="submit" disabled={!formik.isValid} >
-                        Submit
+                    <Button variant="primary" type="submit" disabled={loading}>
+                        {loading ? `Loading...` : `Login`}
                     </Button>
                 </Form>
             </div>
