@@ -2,7 +2,7 @@ import axios from 'axios';
 // Next we make an 'instance' of it
 const service = axios.create({
   baseURL: 'https://node-login-repo.onrender.com',
-  timeout: 20000
+  timeout: 30000
 });
 
 // Also add/ configure interceptors && all the other cool stuff
