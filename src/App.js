@@ -1,26 +1,16 @@
 import { useEffect, useState } from "react";
 import { Container, Row } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import './assets/css/App.css';
 import Header from './components/Header/Header';
 import CurrentUser from './components/User/CurrentUser';
-import User from './components/User/User';
+import User from "./components/User/User";
+import UserLogin from './components/User/UserLogin'
 import { loginUser } from "./service/user.service";
 
 function App() {
   const [isLogin, setLogin] = useState(false);
-  const [userData, setUserData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
-
-  const handleChange = e => {
-    const { name, value } = e.target;
-    setUserData(prevState => ({
-      ...prevState,
-      [name]: value
-    }));
-  };
 
   const appLogout = () => {
     localStorage.removeItem('token');
@@ -51,22 +41,7 @@ function App() {
       <Header isLogin={isLogin} appLogout={appLogout}></Header>
       <Container>
         <Row className="justify-content-md-center">
-          {!isLogin ? (
-            <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Username</Form.Label>
-                <Form.Control type="email" placeholder="Enter username" onChange={handleChange} name="username" />
-              </Form.Group>
-
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control type="password" placeholder="Password" onChange={handleChange} name="password" />
-              </Form.Group>
-
-              <Button variant="primary" onClick={() => submitData(userData)} >
-                Submit
-              </Button>
-            </Form>) : (
+          {!isLogin ? <UserLogin loginCallback={submitData} /> : (
             <>
               <Routes>
                 <Route path="/user/*" element={<User />} />
