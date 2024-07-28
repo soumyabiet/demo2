@@ -1,4 +1,4 @@
-import API from './axiosConfig';
+import API from '../config/axios.config';
 
 const getCurrentUser = async () => {
   try {
@@ -49,4 +49,4 @@ const loginUser = async (userData) => {
   
 }
 
-export { getCurrentUser, addUserData, loginUser, getUserList };
+export { getCurrentUser, addUserData, loginUser, getUserList};

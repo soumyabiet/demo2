@@ -1,7 +1,6 @@
-import React from "react";
-import { useEffect, useState } from "react";
-import { getCurrentUser } from "../../../model/User";
+import React, { useEffect, useState } from "react";
 import { ListGroup } from "react-bootstrap";
+import { getCurrentUser } from "../../service/user.service";
 
 function CurrentUser() {
   const [usersData, setUsersData] = useState(null);

@@ -1,22 +1,19 @@
-import './App.css';
-import Header from './components/Header/Header';
-import { Routes, Route, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from "react";
-import User from './components/Header/User/User';
-import CurrentUser from './components/Header/User/CurrentUser';
+import { Container, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { loginUser } from "./model/User";
-import { Container, Row } from 'react-bootstrap';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import './assets/css/App.css';
+import Header from './components/Header/Header';
+import CurrentUser from './components/User/CurrentUser';
+import User from './components/User/User';
+import { loginUser } from "./service/user.service";
+
 function App() {
-  const [headerData, setHeaderData] = useState(0);
   const [isLogin, setLogin] = useState(false);
   const [userData, setUserData] = useState({ username: '', password: '' });
   const navigate = useNavigate();
 
-  const getNewdata = (data) => {
-    setHeaderData(data)
-  }
   const handleChange = e => {
     const { name, value } = e.target;
     setUserData(prevState => ({

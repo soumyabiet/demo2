@@ -1,19 +1,16 @@
-import React from "react";
-import Table from 'react-bootstrap/Table';
+import React, { useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
+import Table from 'react-bootstrap/Table';
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getUserList } from "../../../../model/User";
+import { getUserList } from "../../../service/user.service";
 
 function List() {
   const [usersData, setUsersData] = useState([]);
   const [uid, setUID] = useState("");
   useEffect(() => {
-    getUserList().then((result)=>{
-      setUsersData(result.data);
-    })
+    getUserList().then(result => setUsersData(result.data));
     setUID(localStorage.getItem('uid'));
-  }, [uid]);
+  }, []);
 
   return (
     <>
